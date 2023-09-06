@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+  <title>每天一分钟，知晓天下事</title>
+  <style>
+    /* 样式可以根据需要自行定制 */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .data-list {
+      list-style: none;
+      padding: 0;
+    }
+    .data-item {
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+    }
+    .data-item .content {
+      margin-bottom: 10px;
+    }
+    .data-item .content p {
+      margin: 0;
+      padding: 0;
+    }
+    .timestamp {
+      text-align: center;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>每天一分钟，知晓天下事</h1>
+    <div class="data-list" id="dataList"></div>
+    <p class="timestamp" id="timestamp"></p>
+  </div>
+
+  <script>
+    // 使用异步请求获取数据
+    fetch('http://42.123.125.40:3000/api/data')
+      .then(response => response.json())
+      .then(data => {
+        const dataList = document.getElementById('dataList');
+        const timestamp = document.getElementById('timestamp');
+
+        // 渲染数据列表
+        data.data.forEach(item => {
+          const listItem = document.createElement('div');
+          listItem.className = 'data-item';
+
+          const content = document.createElement('div');
+          content.className = 'content';
+          item.split('\n').forEach(paragraph => {
+            const p = document.createElement('p');
+            p.textContent = paragraph;
+            content.appendChild(p);
+          });
+
+          listItem.appendChild(content);
+          dataList.appendChild(listItem);
+        });
+
+        // 显示时间戳
+        timestamp.textContent = `数据最新更新时间：${data.timestamp}`;
+      })
+      .catch(error => console.error(error));
+  </script>
+</body> 
+</html>
